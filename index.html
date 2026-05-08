@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>친칠라 고치 🐭</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="gameboy-shell">
+
+    <!-- 상단: 제목 + 정보 -->
+    <div class="top-bar">
+      <div class="game-title">🐭 친칠라 고치</div>
+      <div class="top-info">
+        <span id="stage-label" class="info-tag">🥚 알</span>
+        <span id="status-label" class="info-tag">😌 평온</span>
+        <span id="day-label" class="info-tag">📅 1일차</span>
+      </div>
+    </div>
+
+    <!-- 중앙: 캐릭터 화면 -->
+    <div class="screen-frame">
+      <div class="screen">
+
+        <!-- 진화 애니메이션 오버레이 -->
+        <div id="evolve-overlay" class="evolve-overlay hidden">
+          <div class="evolve-burst">✨</div>
+          <div class="evolve-text" id="evolve-text">진화 중...</div>
+        </div>
+
+        <!-- 엔딩 화면 -->
+        <div id="ending-screen" class="ending-screen hidden">
+          <div class="ending-title">🎉 독립!</div>
+          <div id="ending-char" class="ending-char"></div>
+          <div id="ending-job" class="ending-job"></div>
+          <div id="ending-summary" class="ending-summary"></div>
+          <div id="ending-message" class="ending-message"></div>
+          <button class="btn-retro btn-restart" onclick="restartGame()">🔄 다시 키우기</button>
+        </div>
+
+        <!-- 친칠라 캐릭터 영역 -->
+        <div id="char-area" class="char-area">
+          <div id="chinchilla-char" class="chinchilla-char">
+            <img src="assets/image/egg.png" alt="친칠라" id="chinchilla-img" class="chinchilla-img stage-egg" />
+          </div>
+          <div id="speech-bubble" class="speech-bubble"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 메인 스탯 영역 (성장치·배고픔·행복도·피로도·건강도·애정도) -->
+    <div class="stats-panel">
+      <div class="stats-grid">
+
+        <div class="stat-row">
+          <span class="stat-label">🌱 성장치</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar growth" id="bar-growth"></div>
+          </div>
+          <span class="stat-val" id="val-growth">0</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-label">🍎 배고픔</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar hunger" id="bar-hunger"></div>
+          </div>
+          <span class="stat-val" id="val-hunger">0</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-label">😊 행복도</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar happiness" id="bar-happiness"></div>
+          </div>
+          <span class="stat-val" id="val-happiness">0</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-label">😴 피로도</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar fatigue" id="bar-fatigue"></div>
+          </div>
+          <span class="stat-val" id="val-fatigue">0</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-label">💚 건강도</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar health" id="bar-health"></div>
+          </div>
+          <span class="stat-val" id="val-health">0</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-label">💕 애정도</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar affection" id="bar-affection"></div>
+          </div>
+          <span class="stat-val" id="val-affection">0</span>
+        </div>
+
+      </div>
+      <button class="btn-retro btn-detail-stats" onclick="openDetailStats()">📊 세부 능력치 보기</button>
+    </div>
+
+    <!-- 세부 능력치 오버레이 -->
+    <div id="detail-stats-overlay" class="detail-stats-overlay hidden">
+      <div class="detail-header">
+        <span class="detail-title">📊 세부 능력치</span>
+        <button class="btn-retro btn-close-modal" onclick="closeDetailStats()">✕ 닫기</button>
+      </div>
+      <p class="detail-desc">직업 결정에 영향을 줘요!</p>
+      <div class="stats-grid detail-stats-grid">
+        <div class="stat-row">
+          <span class="stat-label">📚 지능</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar intel" id="bar-intel"></div>
+          </div>
+          <span class="stat-val" id="val-intel">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">💪 체력</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar stamina" id="bar-stamina"></div>
+          </div>
+          <span class="stat-val" id="val-stamina">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">🎉 사교성</span>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar social" id="bar-social"></div>
+          </div>
+          <span class="stat-val" id="val-social">0</span>
+        </div>
+      </div>
+      <p class="detail-jobs-hint">
+        🎓 지능 최고 → 학자<br>
+        💪 체력 최고 → 탐험가 / 운동선수<br>
+        🌟 사교성 최고 → 아이돌<br>
+        💖 애정도 최고 → 힐러<br>
+        🛡️ 균형 잡히면 → 수호자
+      </p>
+    </div>
+
+    <!-- 하단 버튼 영역 -->
+    <div class="action-panel">
+      <div class="btn-grid">
+        <button class="btn-retro btn-feed"  onclick="doAction('feed')">🍎 먹이기</button>
+        <button class="btn-retro btn-play"  onclick="doAction('play')">🎮 놀아주기</button>
+        <button class="btn-retro btn-sleep" onclick="doAction('sleep')">💤 재우기</button>
+        <button class="btn-retro btn-study" onclick="doAction('study')">📚 공부</button>
+        <button class="btn-retro btn-pet"   onclick="doAction('pet')">🤍 쓰다듬기</button>
+        <button class="btn-retro btn-heal" id="btn-heal" onclick="doAction('heal')" disabled>💊 치료</button>
+      </div>
+
+      <div class="special-btns">
+        <button class="btn-retro btn-evolve hidden" id="btn-evolve" onclick="evolve()">✨ 진화하기</button>
+        <button class="btn-retro btn-independent hidden" id="btn-independent" onclick="goIndependent()">🏠 독립</button>
+      </div>
+
+      <div class="reset-area">
+        <button class="btn-reset" onclick="confirmReset()">🗑️ 초기화</button>
+      </div>
+    </div>
+
+  </div><!-- end .gameboy-shell -->
+
+  <script src="script.js"></script>
+</body>
+</html>

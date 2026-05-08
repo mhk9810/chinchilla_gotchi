@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Firebase
+.firebase/
+
+# Claude Code
+.claude/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
